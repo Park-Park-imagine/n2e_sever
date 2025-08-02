@@ -5,10 +5,7 @@ import com.example.n2eServer.service.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/mail")
@@ -21,5 +18,10 @@ public class MailController {
     @PostMapping("/send")
     public ResponseEntity<?> sendMail(@RequestBody MailDto mailDto) {
         return mailService.sendEmail(mailDto);
+    }
+
+    @GetMapping("/find")
+    public ResponseEntity<?> findMail(@RequestParam(required = false) String to, @RequestParam(required = false) Long id) {
+        return mailService.findEmail(to, id);
     }
 }
