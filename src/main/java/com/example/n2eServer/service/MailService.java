@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -28,16 +29,16 @@ public class MailService {
 
     public ResponseEntity<?> sendEmail(MailDto mailDto) {
         try {
-//            if(mailDto.getTo() == null || mailDto.getTo().isEmpty()) {
-//                return ResponseEntity.badRequest().body("수신 이메일을 입력해주세요");
-//            }
-//
-//            SimpleMailMessage message = new SimpleMailMessage();
-//            message.setTo(mailDto.getTo().toArray(String[]::new));
-//            message.setSubject(mailDto.getTitle());
-//            message.setText(mailDto.getContent());
-//
-//            mailSender.send(message);
+            if(mailDto.getTo() == null || mailDto.getTo().isEmpty()) {
+                return ResponseEntity.badRequest().body("수신 이메일을 입력해주세요");
+            }
+
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(mailDto.getTo().toArray(String[]::new));
+            message.setSubject(mailDto.getTitle());
+            message.setText(mailDto.getContent());
+
+            mailSender.send(message);
 
             List<EmailEntity> histories = mailDto.getTo().stream()
                     .map(to -> new EmailEntity(from, to, mailDto.getTitle(), mailDto.getContent()))
